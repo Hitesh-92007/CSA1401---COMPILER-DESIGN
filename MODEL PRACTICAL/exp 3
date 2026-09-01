@@ -1,0 +1,21 @@
+%{
+#include <stdio.h>
+int macros = 0, headers = 0;
+%}
+
+%%
+^#define.*      { macros++; }
+^#include.*     { headers++; }
+.|\n            ;
+%%
+
+int main()
+{
+    yyin = fopen("sample.c", "r");
+    yylex();
+
+    printf("Number of Macros = %d\n", macros);
+    printf("Number of Header Files = %d\n", headers);
+
+    return 0;
+}
